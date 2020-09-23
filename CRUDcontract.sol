@@ -18,23 +18,27 @@ contract crud {
     }
 
     function read(uint id) public view returns(uint, string memory) {
-        for(uint i; i < users.length; i++) {
-            if(users[i].id == id) {
-                return (users[i].id, users[i].name) ;
-            }
-        }
+        uint i = find(id);
+        return (users[i].id, users[i].name);
+
     }
 
     function update(uint id, string memory name) public {
-        for(uint i; i < users.length; i++) {
-            if(users[i].id == id) {
-                users[i].name = name;
-            }
-        }
+        uint i = find(id);
+        users[i].name = name;
     }
 
     function del(uint id) public {
-        delete users[id];
+        uint i = find(id);
+        delete users[i];
     }
 
+
+    function find(uint id) view internal returns(uint){
+        for (uint i; i < users.length; i++) {
+            if (users[i].id == id) {
+                return i;
+            }
+        }
+    }
 }
