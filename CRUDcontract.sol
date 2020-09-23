@@ -40,5 +40,6 @@ contract crud {
                 return i;
             }
         }
+        revert("Requested user does not exist");
     }
 }
