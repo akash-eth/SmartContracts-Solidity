@@ -7,6 +7,9 @@ contract dogoSpace{
     struct doggo {
     
 }
+    function doggoPlanet(uint _year) returns(uint) {
+
+}
   
     
 }
