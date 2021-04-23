@@ -1,24 +1,25 @@
 //SPDX-License-Identifier: Undefined
 
-pragma solidity >=0.5.0;
+pragma solidity >= 0.5.0;
 
-contract AdvancedContracts {
-
-    uint[] ids;
-
-    function add(uint id) public {
-        ids.push(id);
+contract AdvanceStorage {
+    
+    uint[] public ids;
+    
+    function setIDS(uint _id) public {
+        ids.push(_id);
     }
-
-    function get(uint position) public view returns(uint) {
-        return ids[position];
+    
+    function getIDS(uint _position) view public returns(uint) {
+        return ids[_position];
     }
-
-    function getall() public view returns(uint[] memory) {
+    
+    function getAllIDS() view public returns(uint[] memory) {
         return ids;
     }
-
-    function length() public view returns(uint) {
+    
+    function getLength() view public returns(uint) {
         return ids.length;
     }
+    
 }
