@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity >= 0.5.0;
+pragma solidity ^0.5.0;
 
 // Investers will invest
 contract DAO {
@@ -11,7 +10,7 @@ contract DAO {
         uint amount;
         address payable recipient;
         uint vote;
-        uint endTime;
+        uint end;
         bool executed;
     }
     
@@ -47,7 +46,7 @@ contract DAO {
         public 
         {
             require(_quorum > 0 && _quorum < 100, 'quorum must be in definite range');
-            contributionEndTime = block.timestamp + contributionTime;    // Investors can only invest till now + contributionTime;
+            contributionEndTime = now + contributionTime;    // Investors can only invest till now + contributionTime;
             voteTime = _voteTime;
             quorum = _quorum;
             admin = msg.sender;
@@ -55,7 +54,7 @@ contract DAO {
     
     function contribute() payable external {
         
-        require(block.timestamp < contributionEndTime, 'Contribution window is closed');
+        require(now < contributionEndTime, 'Contribution window is closed');
         
         investors[msg.sender] = true;
         shares[msg.sender] = msg.value;
@@ -78,7 +77,7 @@ contract DAO {
         shares[msg.sender] -= _amount;
         availableFunds -= _amount;
         
-        (msg.sender).transfer(_amount);
+        msg.sender.transfer(_amount);
     }
     
     /*
@@ -118,14 +117,14 @@ contract DAO {
     function vote(uint _proposalId) external onlyInvestor() {
         Proposal storage proposal = proposals[_proposalId];
         require(votes[msg.sender][_proposalId] == false, 'voter can only vote once');
-        require(now > proposal.endTime);
+        require(now > proposal.end);
         votes[msg.sender][_proposalId] = true;
         proposal.vote += shares[msg.sender];
     }
     
     function executeProposal(uint _proposalId) external onlyAdmin() {
         Proposal storage proposal = proposals[_proposalId];
-        require(now >= proposal.endTime, 'can not release funds before funding window closes');
+        require(now >= proposal.end, 'can not release funds before funding window closes');
         require(proposal.executed == false, 'proposal already executed');
         require((proposal.vote / totalShares) * 100 >= quorum, 'not enough votes');
         _transferEther(proposal.amount, proposal.recipient);
@@ -138,8 +137,8 @@ contract DAO {
         _transferEther(_amount, _to);
     }
     
-    // fallback function to receive the funds from the recipient contract into our DAO contract!!
-    fallback() payable external {
+    // fallback function to receive the funds from the recipient contract into our DAO contract from an 3rd party!!
+    function() payable external {
         availableFunds += msg.value;
     }
     
