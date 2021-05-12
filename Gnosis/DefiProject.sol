@@ -18,7 +18,7 @@ contract DefiProject {
             address _dai, 
             address _condtionalTokens,
             address _oracle
-        ) public {
+        )  {
             dai = IERC20(_dai);
             conditionalTokens = IConditionalTokens(_condtionalTokens);
             oracle = _oracle;
