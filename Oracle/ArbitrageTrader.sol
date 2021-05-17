@@ -19,7 +19,7 @@ contract ArbitrageTrader {
     address public admin;
     address public oracle;
     
-    constructor() public {
+    constructor()  {
         admin = msg.sender;
     }
     
@@ -55,6 +55,8 @@ contract ArbitrageTrader {
             Dex dexContract = Dex(asset.dex);
             uint price = dexContract.getPrice(_sticker);
             uint amount = 1 ether / price;
+
+            // Making transaction:
             if (price > result.payload) {
                 dexContract.sellToken(_sticker, amount, (99 * price) / 100);
             }
