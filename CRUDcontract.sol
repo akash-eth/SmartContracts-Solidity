@@ -19,7 +19,7 @@ contract CRUD {
     }
     
     function read(uint _id) view public returns(uint, string memory) {
-        // now we have get user info based on IDs. So we'll need to implement loops
+        // now we have get user info based on IDs. So we'll need loops through them
         // for(uint i; i < users.length; i++) {
         //     if(users[i].id == _id) {
         //         return (users[i].id, users[i].name);
